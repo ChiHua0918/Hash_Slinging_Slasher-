@@ -54,8 +54,16 @@ telegram bot
 **燈**
 - [哼歌也能带气氛的彩灯条](https://www.youtube.com/watch?v=XNWpQZbgFx0)
 - [樹莓派LED像素屏 #1 - 介紹與驅動【明富其識】](https://www.youtube.com/watch?v=bAXOTc3Whzo&t=302s)
-- 
-## 感謝名單
+**語音辨識**
+- [柏瑋組專題](https://github.com/NCNU-OpenSource/LSA_Project)
+- [用Python來做 "聲音轉文字"](https://markjong001.pixnet.net/blog/post/246140004)
+- [pyaudio 安裝](https://www.howtoinstall.me/ubuntu/18-04/python3-pyaudio/)
+- [mp3play 無法使用](https://github.com/michaelgundlach/mp3play/issues/6)
+- [播放以及暫停mp3檔](https://www.py4u.net/discuss/12316)
+- [mpg123](https://askubuntu.com/questions/383014/stop-mpg123-without-being-in-its-shell)
+- [漢偉組專題](https://github.com/NCNU-OpenSource/MOLi-PA-Bot)
+- [python-threading 寫法](https://medium.com/ching-i/%E5%A4%9A%E5%9F%B7%E8%A1%8C%E7%B7%92-python-threading-52e1dfb3d5c9)
+- [音頻長度](https://dev.to/konyu/how-to-get-mp3-file-s-durations-with-python-42p)
 ## 感謝名單
 > 照片拍攝 --- 蔣媽
 > LED燈連接問題 --- 蔡琳瀠
