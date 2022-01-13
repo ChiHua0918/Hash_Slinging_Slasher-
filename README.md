@@ -16,7 +16,7 @@ telegram bot
 神職角色可以在個人與bot的聊天室中選擇使用技能與對象
 
 ## 套件
-    語音辨識部分
+    **語音辨識部分**
     sudo apt install vlc
     cat /proc/asound/cards
     sudo vim /usr/share/alsa/alsa.conf
@@ -29,14 +29,14 @@ telegram bot
     pip3 install python-vlc
     pip3 install python-pyaudio python3-pyaudio
 
-    telegram bot
-    pip3 install python-telegram-bot telegram bot
-    pip3 install python-telegram-bot telegram bot
-    pip3 install gtts 文字轉音檔
-    pip3 install python-vlc apt install vlc 播放音檔
-    pip3 install os 執行
+    **telegram bot**
+    pip3 install python-telegram-bot
+    pip3 install gtts
+    pip3 install python-vlc 
+    sudo apt install vlc
+    pip3 install os
 
-    燈
+    **燈**
     sudo apt -y install scons swig
     pip3 install rpi_ws281x
     git clone https://github.com/jgarff/rpi_ws281x.git
@@ -81,7 +81,8 @@ telegram bot
 ## 感謝名單
 > 照片拍攝 --- 蔣媽
 > LED燈連接問題 --- 蔡琳瀠
-> 燈條焊接、telegram bot 問題詢問 --- 漢偉
+> 燈條焊接、問題詢問 --- 漢偉
 > 關鍵字、有趣靈感來源 --- 學而
 > 器材提供 --- 蓬萊人偶
 > 代買器材 --- 嚴彥婷
+> Debug --- 郭子緯
