@@ -9,18 +9,16 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
 def index() :
-    global light_thread
     print("The pid is ", os.getpid())
     formData = request.args['mode']
     print(formData)
-    light_thread = None
     myKeyWord(formData)
-    # return make_response('OK', 200)
+    return make_response('OK', 200)
 
 # LED strip configuration:
 LED_COUNT = 111       
 LED_PIN = 18 
-LED_FREQ_HZ = 800000   
+LED_FREQ_HZ = 800000
 LED_DMA = 10 
 LED_BRIGHTNESS = 255 
 LED_INVERT = False
@@ -42,11 +40,13 @@ def myKeyWord(formData) :
                 turnOff, thePurge, werewolf, witch, predictor,
                 breakingDawn]
     
-    
+    light_thread = None
     light_thread = threading.Thread(target=lightMode[result.index(formData)]())
     light_thread.start()
-
-    #while(True):
+    while(light_thread != None):
+        pass
+    light_thread = None
+    return
 
 #一個一個點亮
 def colorWipe(color):
