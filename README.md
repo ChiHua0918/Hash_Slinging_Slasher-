@@ -10,6 +10,13 @@
 |杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![line_20220113_180335](https://user-images.githubusercontent.com/82037691/149309132-00318bd0-60d0-4e21-9df2-3e78e46fc205.png)|今華電子
 |5V 滴膠燈條 --- 型號(WS2812B)+控制器|![line_20220113_180502](https://user-images.githubusercontent.com/82037691/149309498-93166e59-4ddb-4cfe-a813-310b756eb80b.png)|[蝦皮](https://shopee.tw/%E3%80%90%E4%B8%AD%E9%83%A8%E7%8F%BE%E8%B2%A8%E3%80%91%E7%8F%BE%E8%B2%A8-WS2812B-%E5%B9%BB%E5%BD%A9-%E5%85%A8%E5%BD%A9-%E7%87%88%E6%A2%9D-5V-%E6%BB%B4%E8%86%A0-%E5%BE%AE%E7%AC%91%E7%87%88-%E6%B0%A3%E5%A3%A9%E7%87%88-%E5%B0%BE%E7%AE%B1%E7%87%88-%E7%87%88%E6%A2%9D-%E8%B7%91%E9%A6%AC-%E6%B5%81%E6%B0%B4-WS2811-i.97901339.1600691516?gclid=Cj0KCQiAt8WOBhDbARIsANQLp97byEoNNos5V1EgUVSeY3ZC25vHB5ACzIDCwE-j21K9fjI-OGeNf4kaAri6EALw_wcB)
 |一台裝有 Linux 的電腦 ||
+## 實施過程
+### 語音辨識 + 氣氛燈
+麥克風
+輸入 `alsamixer` 確認有沒有連接到
+如果沒有確認 usb 有沒有偵測到
+`cat /proc/asound/cards`
+### 狼人殺BOT
 ## 如何進行
 telegram bot
     用 telegram bot 玩狼人殺，所有玩家要先將機器人 @Hash_Slinging_Slasher_bot 加為好友，玩家們再創一個群組並將機器人加進群組，開始遊戲前，請先打 /prepare 準備，若要取消準備請打 /cancel ，遊戲開始請打 /start，如果想中止遊戲請打 /stop。
@@ -79,10 +86,10 @@ telegram bot
 - [python-threading 寫法](https://medium.com/ching-i/%E5%A4%9A%E5%9F%B7%E8%A1%8C%E7%B7%92-python-threading-52e1dfb3d5c9)
 - [音頻長度](https://dev.to/konyu/how-to-get-mp3-file-s-durations-with-python-42p)
 ## 感謝名單
-> 照片拍攝 --- 蔣媽
-> LED燈連接問題 --- 蔡琳瀠
-> 燈條焊接、問題詢問 --- 漢偉
-> 關鍵字、有趣靈感來源 --- 學而
-> 器材提供 --- 蓬萊人偶
-> 代買器材 --- 嚴彥婷
-> Debug --- 郭子緯
+- 照片拍攝 --- 蔣媽
+- LED燈連接問題 --- 蔡琳瀠
+- 燈條焊接、問題詢問 --- 漢偉
+- 關鍵字、有趣靈感來源 --- 學而
+- 器材提供 --- 蓬萊人偶
+- 代買器材 --- 嚴彥婷
+- Debug --- 郭子緯
