@@ -10,6 +10,18 @@ import time
 # 文字轉語音
 from gtts import gTTS
 from os import system
+# 多執行序
+import subprocess
+
+# 發送 request 給 raspberry pi
+def send_request(mode):
+    # url = f"http://192.168.1.82?:8081/?mode={mode}"
+    # url = "http://192.168.1.82?:8081/"
+    # response = requests.get(url)
+    # print("Pi server response",response.text)
+    command = f"python3 sendRequest.py {mode}"
+    print(command)
+    subprocess.Popen(command, shell=True)
 
 # 文字轉語音輸出 (文字，停留幾秒)
 def wordToSpeak(text, sec):
@@ -31,27 +43,30 @@ def receive_poll_answer(update: Update, context: CallbackContext):
     poll_id = answer.poll_id
     # 目前總投票人數
     context.bot_data[poll_id]["answers"] += 1
+    # 玩家投了誰
     polled = update.poll_answer.option_ids[0]
     # 該選項投票數
     context.bot_data[poll_id]['result'][polled] += 1
     # Close poll after three participants voted
     if context.bot_data[poll_id]["answers"] == len(players):
-        context.bot.stop_poll(
-            context.bot_data[poll_id]["chat_id"], context.bot_data[poll_id]["message_id"])
-        # 最高票的玩家
+        context.bot.stop_poll(context.bot_data[poll_id]["chat_id"], context.bot_data[poll_id]["message_id"])
         poll_result = context.bot_data[poll_id]['result']
-        get_heighest_player = poll_result.index(max(poll_result))+1
+        # 最高票的玩家
+        print("poll_result",poll_result)
+        print("max_poll",max(poll_result))
+        get_heighest_player = poll_result.index(max(poll_result))
+        # 幾號出局
+        die_out = context.bot_data[poll_id]['poll_number'][get_heighest_player]
         # 如果兩人以上平票 -> 沒人死，遊戲繼續
         poll_result.sort(reverse=True)
         if poll_result[0] == poll_result[1]:
             response = "投票結果為平票，沒有人淘汰，遊戲繼續"
-            context.bot.send_message(
-                chat_id=context.bot_data[poll_id]["chat_id"], text=response)
+            context.bot.send_message(chat_id=context.bot_data[poll_id]["chat_id"], text=response)
         else:
-            response = f"投票結果最高票為 {get_heighest_player} 號玩家"
+            response = f"投票結果最高票為 {die_out} 號玩家"
             context.bot.send_message(chat_id=context.bot_data[poll_id]["chat_id"], text=response)
             # 移除淘汰的人
-            players.pop(get_heighest_player)
+            players.pop(die_out)
             # 遊戲結束
             checkEnd()
         wordToSpeak("天黑請閉眼", 1)
@@ -78,11 +93,11 @@ def poll(update: Update, context: CallbackContext):
             "message_id": message.message_id,
             "chat_id": update.effective_chat.id,
             "answers": 0,
-            "result": option_result
+            "result": option_result,
+            "poll_number" : [i for i in players]
         }
     }
     # 開始投票
-    updater.start_polling()
     context.bot_data.update(payload)
 
 
@@ -93,12 +108,14 @@ def investigation_or_whoPassAway(update, selectNum):
     # 找到對應的角色的 ID
     # 被狼人殺
     if mode == "werewolf":
+        response = f"要殺的對象為 {selectNum} 號"
+        update.callback_query.edit_message_text(text=response)
         whodie.append(selectNum)
         # 找所有狼人 ID 並發送訊息
         for num in players:
             if players[num]['role'] == mode:
-                response = f"您要殺的對象為 {selectNum} 號"
-                update.callback_query.edit_message_text(text=response)
+                userID = players[num]['userID']
+                updater.bot.send_message(chat_id=userID, text=response)
     # 預言家
     elif mode == "predictor":
         # 找預言家 ID發送訊息
@@ -134,6 +151,7 @@ def investigation_or_whoPassAway(update, selectNum):
     # 女巫選擇殺誰 selectNum 為玩家號碼
     elif mode == "poison":
         remaind_bottle[0] = False
+        # 女巫毒人,沒有和玩家殺到同一個玩家
         if selectNum not in whodie:
             whodie.append(selectNum)
         # 女巫 ID
@@ -143,8 +161,6 @@ def investigation_or_whoPassAway(update, selectNum):
                 update.callback_query.edit_message_text(text=response)
 
 # 按鈕回應
-
-
 def reply_button(update: Update, context: CallbackContext):
     global mode
     # string to json
@@ -172,7 +188,6 @@ def reply_button(update: Update, context: CallbackContext):
         mode = "breakingDawn"
         process(mode)
 
-
 # 製作按鈕
 def keyboard(buttonList, mode):
     print("keyboard", mode)
@@ -180,11 +195,15 @@ def keyboard(buttonList, mode):
     # InlineBtn.row_width = 2
     keyboard = []
     row = []
+    print("remind_bottle: ",remaind_bottle)
     # 顯示僅剩的藥水
     if mode == "witch":
-        for i in remaind_bottle:
+        tmp = buttonList.copy()
+        # 把用過得藥水移除
+        for i in range(len(remaind_bottle)):
             if remaind_bottle[i] == False:
-                buttonList.pop(i)
+                tmp.pop(i)
+        buttonList = tmp
     # 回應按鈕
     for btn in buttonList:
         # 對該角色玩家 ID 發送 keyboard
@@ -200,13 +219,26 @@ def keyboard(buttonList, mode):
         keyboard.append(row)
     reply_markup = InlineKeyboardMarkup(keyboard)
     # 傳送 keyboard 給目前符合模式的角色 ID
-    # 狼人
+    # 狼人 --- 目前場上還活著的狼人,數字最小的狼人才可以投票
+    print("keyboard players",players)
     if mode == "werewolf":
+        # 所有狼人號碼 - 最後一個狼掌握生死大權
+        allwerewolf = []
+        # 先加入所有狼人
         for num in players:
             if players[num]['role'] == mode:
-                userID = players[num]['userID']
-                updater.bot.send_message(
-                    chat_id=userID, text="請選擇獵殺的號碼", reply_markup=reply_markup)
+                allwerewolf.append(num)
+        # 發訊息給所有狼
+        for num in allwerewolf:
+            userID = players[num]['userID']
+            # 其餘狼人不可以選擇獵殺號碼
+            updater.bot.send_message(chat_id=userID, text=f"狼人號碼為{allwerewolf}")
+            # 最後一個狼人可以選擇獵殺的號碼
+            print("allwerewolf.index(num)",allwerewolf.index(num))
+            print("allwerewolf",allwerewolf)
+            if allwerewolf.index(num) == len(allwerewolf)-1:
+                updater.bot.send_message(chat_id=userID, text="請選擇獵殺的號碼", reply_markup=reply_markup)
+            
     # 預言家
     elif mode == "predictor":
         for num in players:
@@ -234,9 +266,9 @@ def keyboard(buttonList, mode):
 def process(step):
     print("process-step", mode)
     # 狼人模式
-
     def wolf():
         updater.bot.send_message(chat_id=group_id, text=f"狼人請睜眼")
+        send_request(mode)
         system('cvlc --play-and-exit '+mode+'.mp3')
         # path = "./"+step+".mp3"
         # playsound.playsound(path)
@@ -246,7 +278,6 @@ def process(step):
         # 跳出 keyboard 選擇號碼 --- 一個人負責點選殺誰
         keyboard([i for i in players], "werewolf")
     # 預言家模式
-
     def predict():
         global players, mode
         # path = "./"+step+".mp3"
@@ -257,8 +288,9 @@ def process(step):
                 live = True
                 break
         wordToSpeak("狼人請閉眼", 1)
-        updater.bot.send_message(chat_id=group_id, text=f"預言家請睜眼")
+        send_request(mode)
         system('cvlc --play-and-exit '+mode+'.mp3')
+        updater.bot.send_message(chat_id=group_id, text=f"預言家請睜眼")
         wordToSpeak("預言家請睜眼", 1)
         wordToSpeak("預言家請選擇要查驗的對象", 1)
         keyboard([i for i in players], "predictor")
@@ -267,7 +299,6 @@ def process(step):
             mode = "witch"
             process(mode)
     # 女巫模式
-
     def witch():
         # path = "./"+step+".mp3"
         # playsound.playsound(path)
@@ -280,6 +311,7 @@ def process(step):
                 break
         wordToSpeak("預言家請閉眼", 1)
         system('cvlc --play-and-exit '+mode+'.mp3')
+        send_request(mode)
         wordToSpeak("女巫請睜眼", 1)
         wordToSpeak("有人被殺了，請問要救他嗎?還是要使用毒藥呢?", 1)
         keyboard(["poison", "revive", "skip"], "witch")
@@ -288,14 +320,13 @@ def process(step):
             mode = "breakingDawn"
             process(mode)
     # 天亮模式
-
     def breakingDawn():
         global players, mode, group_id,whodie
-
         wordToSpeak("女巫請閉眼", 1)
         # 天亮了 --- 誰死了 or 平安夜
         # 沒有人死
         system('cvlc --play-and-exit '+mode+'.mp3')
+        send_request(mode)
         if len(whodie) == 0:
             updater.bot.send_message(chat_id=group_id, text=f"天亮了!今晚是平安夜")
             wordToSpeak(f"天亮了!今晚是平安夜", 1)
@@ -309,9 +340,10 @@ def process(step):
             for i in whodie:
                 del players[i]
             whodie = []
-        # 遊戲結束
+        # 檢查遊戲是否結束
         checkEnd()
         mode = "werewolf"
+
     if status == True:
         if step == "werewolf":
             wolf()
@@ -366,59 +398,69 @@ def distribution(players, playerNum):
         for i in range(differ-differ//2):
             roles.append("civilian")
     random.shuffle(roles)
-    for i in range(playerNum):
+    for i in range(1,playerNum+1):
         data = dict()
         data['userID'] = players[i]['userID']
-        data['role'] = roles[i]
+        data['role'] = roles[i-1]
         data['name'] = players[i]['name']
-        playerRole[i+1] = data
+        playerRole[i] = data
+    print("players",playerRole)
     return playerRole
 
 # 遊戲開始
-def start(update: Update, context: CallbackContext):
+def startGame(update: Update, context: CallbackContext):
     global players, status, mode, group_id, remaind_bottle
     # 女巫藥水
     remaind_bottle = [True for i in range(3)]
     # 紀錄當天夜晚死亡號碼
     whodie = []
+    # 只可以在群組發送
+    if update.message.chat_id >= 0:
+        updater.bot.send_message(chat_id=update.message.chat_id, text="狼人殺只可以在群組內玩~")
+        return
     # 遊玩人數至少要 4 個
-    if len(players) >= 4:
-        # 遊戲已經進行
-        if status == True:
-            response = "遊戲已進行，若要重新開始請先結束遊戲!"
-            update.message.reply_text(response)
-            return
-        status = True
-        # 各個玩家資訊(編號、userID、角色、telegram's 名字)/角色分配
-        playerRole = distribution(players, len(players))
-        # 對群組/玩家發送通知
-        response = "遊戲開始"
-        updater.bot.send_message(chat_id=group_id, text=response)
-        for players in range(len(playerRole)):
-            userID = playerRole[players+1]['userID']
-            role = playerRole[players+1]['role']
-            text = f"您是{players+1}號,角色是:{role}"
-            updater.bot.send_message(chat_id=userID, text=text)
-        players = playerRole
-        wordToSpeak("遊戲開始 5 秒後進入傍晚，請至私人聊天室確認自己的號碼和身分",1)
-        wordToSpeak("倒數 5 秒", 1)
-        for i in range(4, 0, -1):
-            wordToSpeak(str(i), 1)
-        wordToSpeak("天黑請閉眼", 1)
-        process(mode)
-    else:
-        updater.bot.send_message(
-            chat_id=update.message.chat_id, text="人數不足 4 人，無法進行遊戲")
+    if len(players) < 4:
+        updater.bot.send_message(chat_id=update.message.chat_id, text="人數不足 4 人，無法進行遊戲")
+        return
+    # 遊戲進行中
+    if status == True:
+        response = "遊戲已進行，若要重新開始請先結束遊戲!"
+        update.message.reply_text(response)
+        return
+    # 白天的燈
+    send_request("breakingDawn")
+    status = True
+    mode = "werewolf"
+    # 各個玩家資訊(編號、userID、角色、telegram's 名字)/角色分配
+    playerRole = distribution(players, len(players))
+    # 對群組/玩家發送通知
+    updater.bot.send_message(chat_id=group_id, text="遊戲開始")
+    for players in range(len(playerRole)):
+        userID = playerRole[players+1]['userID']
+        role = playerRole[players+1]['role']
+        text = f"您是{players+1}號,角色是:{role}"
+        updater.bot.send_message(chat_id=userID, text=text)
+    players = playerRole
+    wordToSpeak("遊戲開始 5 秒後進入傍晚，請至私人聊天室確認自己的號碼和身分",1)
+    updater.bot.send_message(chat_id=group_id, text="遊戲開始 5 秒後進入傍晚，請至私人聊天室確認自己的號碼和身分")
+    wordToSpeak("倒數 5 秒", 1)
+    updater.bot.send_message(chat_id=group_id, text="倒數五秒")
+    for i in range(4, 0, -1):
+        wordToSpeak(str(i), 1)
+        updater.bot.send_message(chat_id=group_id, text=str(i))
+    wordToSpeak("天黑請閉眼", 1)
+    updater.bot.send_message(chat_id=group_id, text="天黑請閉眼")
+    process(mode)
 
 # 清除資料
 def clearData():
     # 記錄清空
-    global players, status, group_id
-    players = []
+    global players, status
+    players = dict()
     status = False
 
 # 遊戲中止
-def stop(update: Update, context: CallbackContext):
+def stopGame(update: Update, context: CallbackContext):
     clearData()
     response = "遊戲結束"
     updater.bot.send_message(chat_id=group_id, text=response)
@@ -437,12 +479,23 @@ def cancel(update: Update, context: CallbackContext):
 
 # 玩家準備 --- 同時記錄 ID & 人數
 def prepare(update: Update, context: CallbackContext):
+    # 遊戲進行中不可以有玩家準備
+    if status == True:
+        response = "遊戲進行中,請等待下一場遊戲"
+        update.message.reply_text(response)
+    # 預防有人沒有加 telegram bot 為好友
+    try :
+        print(update.message.from_user.id)
+        updater.bot.send_message(chat_id=update.message.from_user.id, text="您準備了遊戲")
+    except:
+        update.message.reply_text("請先將 @Hash_Slinging_Slasher_bot 加為好友")
+        return
 
     # 只有群組才可以準備
     if update.message.chat_id >= 0:
-        updater.bot.send_message(
-            chat_id=update.message.chat_id, text="狼人殺只可以在群組內玩~")
+        updater.bot.send_message(chat_id=update.message.chat_id, text="狼人殺只可以在群組內玩~")
         return
+
     global players, group_id
     userID = update.message.from_user.id
     group_id = update.message.chat_id
@@ -450,8 +503,8 @@ def prepare(update: Update, context: CallbackContext):
     hasPrepare = False  # 是否準備過
     response = ""
     # 之前未準備過
-    for data in players:
-        if str(userID) == str(data['userID']):
+    for i in players:
+        if userID == players[i]['userID']:
             hasPrepare = True
             response = "您已準備完成!"
             break
@@ -459,18 +512,17 @@ def prepare(update: Update, context: CallbackContext):
         userData = dict()
         userData['userID'] = userID
         userData['name'] = name
-        players.append(userData)
+        players[len(players)+1] = userData
         response = f"目前準備人數 {len(players)} 人"
+    print("prepare",players)
     updater.bot.send_message(chat_id=group_id, text=response)
 
 # 列出目前所有準備的玩家
-
-
 def listPrepare(update: Update, context: CallbackContext):
     global players
     response = ""
     for i in players:
-        response += f"號"
+        response += f"{i} 號"
         response += players[i]['name']
         response += "\n"
     response += f"以上總共 {len(players)} 位玩家已準備"
@@ -483,25 +535,31 @@ def introduce(update: Update, context: CallbackContext):
                '/color (看看可不可以隨意調燈光顏色)(調狼人殺燈光或是不玩遊戲單純調燈光顏色)'
     update.message.reply_text(response)
 
+# 點燈 --- 控制燈的顏色
+# def lightUp():
+    # 有哪些顏色的燈？
+    # 還是可以發送 RGB 給 pi 然後點亮這個顏色的燈?
 
 def command():
+    # updater.dispatcher.add_handler(CommandHandler('lightUp', lightUp))
     updater.dispatcher.add_handler(CommandHandler('introduce', introduce))
-    updater.dispatcher.add_handler(CommandHandler('listprepare', listPrepare))
     updater.dispatcher.add_handler(CommandHandler('prepare', prepare))
     updater.dispatcher.add_handler(CommandHandler('cancel', cancel))
-    updater.dispatcher.add_handler(CommandHandler('start', start))
-    updater.dispatcher.add_handler(CommandHandler('stop', stop))
+    updater.dispatcher.add_handler(CommandHandler('listprepare', listPrepare))
+    updater.dispatcher.add_handler(CommandHandler('start_game', startGame))
+    updater.dispatcher.add_handler(CommandHandler('stop_game', stopGame))
     updater.dispatcher.add_handler(CallbackQueryHandler(reply_button))
     updater.dispatcher.add_handler(CommandHandler('poll', poll))
     updater.dispatcher.add_handler(PollAnswerHandler(receive_poll_answer))
 
 
-players = []  # 玩家資訊
+players = dict()  # 玩家資訊
 status = False  # 遊戲使否進行中
 mode = "werewolf"  # 現在遊戲的模式
 group_id = 0  # 群組 ID
 remaind_bottle = [True for i in range(3)]  # 各藥水是否還有 True:還有藥水
 whodie = [] # 紀錄這個晚上誰死了
+
 
 if __name__ == "__main__":
     file = open("token.txt", mode='r')
@@ -510,3 +568,4 @@ if __name__ == "__main__":
     command()
     updater.start_polling()
     updater.idle()
+    # send_request("werewolf")
