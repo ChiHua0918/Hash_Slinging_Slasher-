@@ -48,7 +48,7 @@ def checkKeyword(mySentence) :
             "聖誕", "新年", "延畢", "夜光閃亮亮復仇鬼", "打*", 
             "激烈做愛", "生日", "真相永遠只有一個", "紅鯉魚與綠鯉魚與驢", "音樂",
             "關燈", "重灌"] # 音樂
-    result = ["creepy", "relax", "party", "werewolf", "sleep", 
+    result = ["creepy", "relax", "party", "startWerewolf", "sleep", 
               "Christmas", "NewYear", "thePurge", "fu-chou-gui", "pao", 
               "clap", "Birthday", "conan", "so", "music",
               "turnOff", "WTM"]
