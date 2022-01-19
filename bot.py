@@ -370,11 +370,14 @@ def checkEnd():
         clearData()
         wordToSpeak("遊戲結束，好人獲勝!", 1)
         updater.bot.send_message(chat_id=group_id, text="遊戲結束 ! 好人獲勝")
+        # 關燈
+        send_request('turnOff')
     # 平民全死
     elif mortal == 0:
         clearData()
         wordToSpeak("遊戲結束，狼人獲勝!", 1)
         updater.bot.send_message(chat_id=group_id, text="遊戲結束! 狼人獲勝")
+        send_request('turnOff')
 
 # 角色分配
 def distribution(players, playerNum):
@@ -464,6 +467,8 @@ def stopGame(update: Update, context: CallbackContext):
     clearData()
     response = "遊戲結束"
     updater.bot.send_message(chat_id=group_id, text=response)
+    # 關燈
+    send_request('turnOff')
 
 # 取消準備
 def cancel(update: Update, context: CallbackContext):
