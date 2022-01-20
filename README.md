@@ -1,13 +1,14 @@
+# README
 ## Concept Development 理念
 熱愛狼人殺的大馬達想要在考完期末考後辦個期末派對，邀請朋友們來家裡開趴，但是卻沒有甚麼東西能拿來布置，又覺得disco燈太過普通不想買，眼看著期末已經到來，苦無對策之下她找了LSA的助教們求救，最後在漢偉、蔣媽和BT的建議下想出了**嗷嗚嗷嗚氣氛燈**，並找了采禎、琪樺、亮亮來製作。
 
 ## Implementation Resources 設備資源
 |設備名|圖片|來源
 |-|-|-|
-|樹梅派 Pi4|![](https://i.imgur.com/ShpYn19.png =200x)|柏瑋友情贊助
-|USB全指向降噪麥克風(MIC-026)|![](https://i.imgur.com/fNKUQcY.jpg =200x)|欣華電子
-|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![](https://i.imgur.com/ca5f9zh.png =100x)![](https://i.imgur.com/dh4YwPm.png =100x)![](https://i.imgur.com/LQgyceZ.png =100x)|今華電子
-|5V 滴膠燈條 --- 型號(WS2812B)+控制器|![](https://i.imgur.com/SPqFdUy.png =200x)|[蝦皮](https://shopee.tw/%E3%80%90%E4%B8%AD%E9%83%A8%E7%8F%BE%E8%B2%A8%E3%80%91%E7%8F%BE%E8%B2%A8-WS2812B-%E5%B9%BB%E5%BD%A9-%E5%85%A8%E5%BD%A9-%E7%87%88%E6%A2%9D-5V-%E6%BB%B4%E8%86%A0-%E5%BE%AE%E7%AC%91%E7%87%88-%E6%B0%A3%E5%A3%A9%E7%87%88-%E5%B0%BE%E7%AE%B1%E7%87%88-%E7%87%88%E6%A2%9D-%E8%B7%91%E9%A6%AC-%E6%B5%81%E6%B0%B4-WS2811-i.97901339.1600691516?gclid=Cj0KCQiAt8WOBhDbARIsANQLp97byEoNNos5V1EgUVSeY3ZC25vHB5ACzIDCwE-j21K9fjI-OGeNf4kaAri6EALw_wcB)
+|樹梅派 Pi4|![](https://i.imgur.com/ShpYn19.png)|柏瑋友情贊助
+|USB全指向降噪麥克風(MIC-026)|![](https://i.imgur.com/fNKUQcY.jpg)|欣華電子
+|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![](https://i.imgur.com/ca5f9zh.png)![](https://i.imgur.com/dh4YwPm.png)![](https://i.imgur.com/LQgyceZ.png)|今華電子
+|5V 滴膠燈條 --- 型號(WS2812B)+控制器|![](https://i.imgur.com/SPqFdUy.png)|[蝦皮](https://shopee.tw/%E3%80%90%E4%B8%AD%E9%83%A8%E7%8F%BE%E8%B2%A8%E3%80%91%E7%8F%BE%E8%B2%A8-WS2812B-%E5%B9%BB%E5%BD%A9-%E5%85%A8%E5%BD%A9-%E7%87%88%E6%A2%9D-5V-%E6%BB%B4%E8%86%A0-%E5%BE%AE%E7%AC%91%E7%87%88-%E6%B0%A3%E5%A3%A9%E7%87%88-%E5%B0%BE%E7%AE%B1%E7%87%88-%E7%87%88%E6%A2%9D-%E8%B7%91%E9%A6%AC-%E6%B5%81%E6%B0%B4-WS2811-i.97901339.1600691516?gclid=Cj0KCQiAt8WOBhDbARIsANQLp97byEoNNos5V1EgUVSeY3ZC25vHB5ACzIDCwE-j21K9fjI-OGeNf4kaAri6EALw_wcB)
 |一台裝有類 Linux 的電腦，並且可以錄音及收音 |
 
 
@@ -21,6 +22,12 @@ sudo apt install python3-pip
 **下載 git**
 ```rerminal=
 sudo apt install git
+```
+**clone 燈條套件**
+- python 沒有內建 ws281x 的套件，所以要用樹莓派點亮 
+- 之後安裝套件和執行程式都在`/rpi_ws281x/python/examples/`這個目錄下進行
+```terminel=
+clone https://github.com/jgarff/rpi_ws281x.git`
 ```
 **語音辨識部分**
 ```terminal=
@@ -42,41 +49,36 @@ sudo apt install vlc
 **燈光**
 ```terminal=
 pip3 install rpi_ws281x
-git clone https://github.com/jgarff/rpi_ws281x.git
 sudo python ./python/setup.py install
 ```
 
 ### 【燈光】
-- 由樹莓派控制燈號。樹莓派是 server 負責接收語音辨識程式或 telegram bot 傳送過來的燈光 requests
+- 由樹莓派控制燈號。
+- 樹莓派是 server 負責接收語音辨識程式或 telegram bot 傳送過來的燈光 requests。
 #### 接線
 - 由於樹莓派 GPIO 供電不足以點亮整座燈條，需要外接電源。
 - 將 5 條電線焊接到燈條的輸入端。
     - 2 條紅色電線：供電
     - 2 條黑色電線：接地
     - 1 條綠色電線：傳送訊號
-- 將 5 條電線分別插到對應的位置：紅黑綠線各一條街法如下圖，剩下紅黑各一條接到 5V2A 的供電
-    - 紅線接4號(正極、5v Power)
-    - 黑線接6號(接地)
-    - 綠線接12號(DataIn、GPIO 18)
+- 將 5 條電線分別插到對應的位置。
+    - 1 條紅線接4號(正極、5v Power)
+    - 1 條黑線接6號(接地)
+    - 1 條綠線接12號(DataIn、GPIO 18)
+    - 剩下 1 條紅線和 1 條黑線接到 5V2A 的供電器
     ![](https://i.imgur.com/0ydY6td.png)
-- clone 點亮 ws281x 燈條的套件 
-```terminel=
-clone https://github.com/jgarff/rpi_ws281x.git`
-```
-- cd 切換目錄 `~/rpi_ws281x/python/examples/
-- 測試燈條
-    - 把`strandtest.py` 的 `LED_COUNT` 改成燈條實際有的單元數量
-    - 執行這個檔案，若可以點亮燈光代表安裝成功
-```terminal=
-sudo python3 strandtest.py
-```
-![](https://i.imgur.com/aHRbt4u.png =200x)
-- 啟動 server
+- 測試套件是否安裝成功。
+    - 把`strandtest.py` 的 `LED_COUNT` 改成自己的燈條上的單元數量。
+    - 執行這個檔案，若可以點亮燈光代表安裝成功。
+    ```terminal=
+    sudo python3 strandtest.py
+    ```
+    ![](https://i.imgur.com/aHRbt4u.png)
+- 啟動 server。
     - 把 `lightServer.py` 和 `lightMode.py` 放到此目錄下
-
-```terminal=
-sudo python3 lightServer.py
-```
+    ```terminal=
+    sudo python3 lightServer.py
+    ```
 ### 【語音辨識 & 音樂】
 - 程式偵測在語句中提到關鍵詞，會播放相對應的音樂(.mp3)，並傳送亮燈的 requests 給樹莓派
     - 如果一句內有2個以上的關鍵詞，會以程式碼中排列順序覆蓋前面的音樂和 request
@@ -181,19 +183,19 @@ python3 Speech2Music.py
 
 
 ## 感謝名單
-- 照片拍攝[name=蔣媽]
-
-- LED燈連接問題 [name=蔡琳瀠]
-
-- 燈條焊接、各種問題詢問[name=漢偉]
-
-- 關鍵字、有趣靈感來源[name=學而姐姐]
-
-- 器材提供[name=蓬萊人偶]
-
-- 代買器材[name=嚴彥婷]
+- 照片拍攝
+[name=蔣媽]
+- LED燈連接問題 
+[name=蔡琳瀠]
+- 燈條焊接、各種問題詢問
+[name=漢偉]
+- 關鍵字、有趣靈感來源
+[name=學而姐姐]
+- 器材提供
+[name=蓬萊人偶]
+- 代買器材
+[name=嚴彥婷]
 
 ## 實作影片
-
-[語音辨識和氣氛燈](https://www.youtube.com/watch?v=thVm5X8Rec8)
-[狼人殺bot遊戲過程](https://www.youtube.com/watch?v=GnFAuDYYw5I)
+- [語音辨識和氣氛燈](https://www.youtube.com/watch?v=thVm5X8Rec8)
+- [狼人殺bot遊戲過程](https://www.youtube.com/watch?v=GnFAuDYYw5I)
