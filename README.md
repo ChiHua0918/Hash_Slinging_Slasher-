@@ -1,14 +1,16 @@
-# README
+# LSA git README
+# FINAL-PROJECT-README-TEMPLATE
+[TOC]
 ## Concept Development 理念
 熱愛狼人殺的大馬達想要在考完期末考後辦個期末派對，邀請朋友們來家裡開趴，但是卻沒有甚麼東西能拿來布置，又覺得disco燈太過普通不想買，眼看著期末已經到來，苦無對策之下她找了LSA的助教們求救，最後在漢偉、蔣媽和BT的建議下想出了**嗷嗚嗷嗚氣氛燈**，並找了采禎、琪樺、亮亮來製作。
 
 ## Implementation Resources 設備資源
 |設備名|圖片|來源
 |-|-|-|
-|樹梅派 Pi4|![](https://i.imgur.com/ShpYn19.png)|柏瑋友情贊助
-|USB全指向降噪麥克風(MIC-026)|![](https://i.imgur.com/fNKUQcY.jpg)|欣華電子
-|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![](https://i.imgur.com/ca5f9zh.png)![](https://i.imgur.com/dh4YwPm.png)![](https://i.imgur.com/LQgyceZ.png)|今華電子
-|5V 滴膠燈條 --- 型號(WS2812B)+控制器|![](https://i.imgur.com/SPqFdUy.png)|[蝦皮](https://shopee.tw/%E3%80%90%E4%B8%AD%E9%83%A8%E7%8F%BE%E8%B2%A8%E3%80%91%E7%8F%BE%E8%B2%A8-WS2812B-%E5%B9%BB%E5%BD%A9-%E5%85%A8%E5%BD%A9-%E7%87%88%E6%A2%9D-5V-%E6%BB%B4%E8%86%A0-%E5%BE%AE%E7%AC%91%E7%87%88-%E6%B0%A3%E5%A3%A9%E7%87%88-%E5%B0%BE%E7%AE%B1%E7%87%88-%E7%87%88%E6%A2%9D-%E8%B7%91%E9%A6%AC-%E6%B5%81%E6%B0%B4-WS2811-i.97901339.1600691516?gclid=Cj0KCQiAt8WOBhDbARIsANQLp97byEoNNos5V1EgUVSeY3ZC25vHB5ACzIDCwE-j21K9fjI-OGeNf4kaAri6EALw_wcB)
+|樹梅派 Pi4|![](https://i.imgur.com/ShpYn19.png =50%x)|柏瑋友情贊助
+|USB全指向降噪麥克風(MIC-026)|![](https://i.imgur.com/fNKUQcY.jpg =50%x)|欣華電子
+|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![](https://i.imgur.com/ca5f9zh.png =50%x)![](https://i.imgur.com/dh4YwPm.png =50%x)![](https://i.imgur.com/LQgyceZ.png =50%x)|今華電子
+|5V 滴膠燈條 --- 型號(WS2812B)+控制器|![](https://i.imgur.com/SPqFdUy.png =50%x)|[蝦皮](https://shopee.tw/%E3%80%90%E4%B8%AD%E9%83%A8%E7%8F%BE%E8%B2%A8%E3%80%91%E7%8F%BE%E8%B2%A8-WS2812B-%E5%B9%BB%E5%BD%A9-%E5%85%A8%E5%BD%A9-%E7%87%88%E6%A2%9D-5V-%E6%BB%B4%E8%86%A0-%E5%BE%AE%E7%AC%91%E7%87%88-%E6%B0%A3%E5%A3%A9%E7%87%88-%E5%B0%BE%E7%AE%B1%E7%87%88-%E7%87%88%E6%A2%9D-%E8%B7%91%E9%A6%AC-%E6%B5%81%E6%B0%B4-WS2811-i.97901339.1600691516?gclid=Cj0KCQiAt8WOBhDbARIsANQLp97byEoNNos5V1EgUVSeY3ZC25vHB5ACzIDCwE-j21K9fjI-OGeNf4kaAri6EALw_wcB)
 |一台裝有類 Linux 的電腦，並且可以錄音及收音 |
 
 
@@ -197,5 +199,6 @@ python3 Speech2Music.py
 [name=嚴彥婷]
 
 ## 實作影片
-- [語音辨識和氣氛燈](https://www.youtube.com/watch?v=thVm5X8Rec8)
-- [狼人殺bot遊戲過程](https://www.youtube.com/watch?v=GnFAuDYYw5I)
+
+[語音辨識和氣氛燈](https://www.youtube.com/watch?v=thVm5X8Rec8)
+[狼人殺bot遊戲過程](https://www.youtube.com/watch?v=GnFAuDYYw5I)
