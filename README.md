@@ -207,9 +207,9 @@ python3 Speech2Music.py
 - 嚴彥婷：代買器材
 
 ## 實作影片
-
-[語音辨識和氣氛燈](https://www.youtube.com/watch?v=thVm5X8Rec8)
-[狼人殺bot遊戲過程](https://www.youtube.com/watch?v=GnFAuDYYw5I)
+- [語音辨識和氣氛燈](https://www.youtube.com/watch?v=thVm5X8Rec8)
+- [狼人殺bot遊戲過程](https://www.youtube.com/watch?v=GnFAuDYYw5I)
+- [狼人殺 Demo](https://youtu.be/sHKFE53tmeg)
 
 
 
