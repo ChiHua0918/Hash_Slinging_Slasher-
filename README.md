@@ -8,7 +8,7 @@
 |設備名|圖片|來源
 |-|-|-|
 |樹梅派 Pi4|![image](https://user-images.githubusercontent.com/82037691/150295644-997dbe3b-ca04-4fc3-89ca-8a37551f3caa.png)|柏瑋友情贊助
-|USB全指向降噪麥克風(MIC-026)|![image](https://user-images.githubusercontent.com/82037691/150295727-a45657b3-4fa2-4c34-a65f-45d142f26fdb.png)|欣華電子
+|USB全指向降噪麥克風(MIC-026)|![image](https://user-images.githubusercontent.com/82037691/150296055-04532068-34a7-4b68-a4a3-1433eaf53d8b.png)|欣華電子
 |杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![image](https://user-images.githubusercontent.com/82037691/150295845-83f4ee10-5ea7-445b-9bc6-6080fa5de1dc.png)|今華電子
 |5V 滴膠燈條 --- 型號(WS2812B)+控制器|![image](https://user-images.githubusercontent.com/82037691/150295911-fb1b79cf-ab6c-438e-97f8-64b08fad6427.png)|[蝦皮](https://shopee.tw/%E3%80%90%E4%B8%AD%E9%83%A8%E7%8F%BE%E8%B2%A8%E3%80%91%E7%8F%BE%E8%B2%A8-WS2812B-%E5%B9%BB%E5%BD%A9-%E5%85%A8%E5%BD%A9-%E7%87%88%E6%A2%9D-5V-%E6%BB%B4%E8%86%A0-%E5%BE%AE%E7%AC%91%E7%87%88-%E6%B0%A3%E5%A3%A9%E7%87%88-%E5%B0%BE%E7%AE%B1%E7%87%88-%E7%87%88%E6%A2%9D-%E8%B7%91%E9%A6%AC-%E6%B5%81%E6%B0%B4-WS2811-i.97901339.1600691516?gclid=Cj0KCQiAt8WOBhDbARIsANQLp97byEoNNos5V1EgUVSeY3ZC25vHB5ACzIDCwE-j21K9fjI-OGeNf4kaAri6EALw_wcB)
 |一台裝有類 Linux 的電腦，並且可以錄音及收音 |
