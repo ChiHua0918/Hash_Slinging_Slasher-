@@ -1,18 +1,18 @@
-# LSA git README
-# FINAL-PROJECT-README-TEMPLATE
-[TOC]
+# README
+
 ## Concept Development 理念
-熱愛狼人殺的大馬達想要在考完期末考後辦個期末派對，邀請朋友們來家裡開趴，但是卻沒有甚麼東西能拿來布置，又覺得disco燈太過普通不想買，眼看著期末已經到來，苦無對策之下她找了LSA的助教們求救，最後在漢偉、蔣媽和BT的建議下想出了**嗷嗚嗷嗚氣氛燈**，並找了采禎、琪樺、亮亮來製作。
+熱愛狼人殺的大馬達想要在考完期末考後辦個期末派對，邀請朋友們來家裡開趴，但是卻沒有甚麼東西能拿來布置 QAQ
+眼看著期末已經到來，苦無對策之下她找了 LSA 的助教們求救，最後在漢偉、蔣媽和BT的建議下想出了**嗷嗚嗷嗚氣氛燈**，並找了采禎、琪樺、亮亮來製作。
 
 ## Implementation Resources 設備資源
-|設備名|圖片|來源
-|-|-|-|
-|樹梅派 Pi4|![image](https://user-images.githubusercontent.com/82037691/150295644-997dbe3b-ca04-4fc3-89ca-8a37551f3caa.png)|柏瑋友情贊助
-|USB全指向降噪麥克風(MIC-026)|![image](https://user-images.githubusercontent.com/82037691/150296055-04532068-34a7-4b68-a4a3-1433eaf53d8b.png)|欣華電子
-|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![image](https://user-images.githubusercontent.com/82037691/150295845-83f4ee10-5ea7-445b-9bc6-6080fa5de1dc.png)|今華電子
-|5V 滴膠燈條 --- 型號(WS2812B)+控制器|![image](https://user-images.githubusercontent.com/82037691/150295911-fb1b79cf-ab6c-438e-97f8-64b08fad6427.png)|[蝦皮](https://shopee.tw/%E3%80%90%E4%B8%AD%E9%83%A8%E7%8F%BE%E8%B2%A8%E3%80%91%E7%8F%BE%E8%B2%A8-WS2812B-%E5%B9%BB%E5%BD%A9-%E5%85%A8%E5%BD%A9-%E7%87%88%E6%A2%9D-5V-%E6%BB%B4%E8%86%A0-%E5%BE%AE%E7%AC%91%E7%87%88-%E6%B0%A3%E5%A3%A9%E7%87%88-%E5%B0%BE%E7%AE%B1%E7%87%88-%E7%87%88%E6%A2%9D-%E8%B7%91%E9%A6%AC-%E6%B5%81%E6%B0%B4-WS2811-i.97901339.1600691516?gclid=Cj0KCQiAt8WOBhDbARIsANQLp97byEoNNos5V1EgUVSeY3ZC25vHB5ACzIDCwE-j21K9fjI-OGeNf4kaAri6EALw_wcB)
-|一台裝有類 Linux 的電腦，並且可以錄音及收音 |
 
+|設備名|來源|
+|-|-|
+|樹梅派 Pi4|柏瑋友情贊助|
+|USB全指向降噪麥克風(MIC-026)|欣華電子|
+|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|今華電子|
+|5V 滴膠燈條 --- 型號(WS2812B)+控制器|[蝦皮](https://reurl.cc/rQRDoN)
+|一台裝有類 Linux 的電腦，並且可以錄音及收音 | 自己的電腦 |
 
 ## Implementation Process 實作過程
 - 本次實作分為三部分來解說過程：燈光、語音辨識播音樂、Telegram bot
@@ -68,14 +68,14 @@ sudo python ./python/setup.py install
     - 1 條黑線接6號(接地)
     - 1 條綠線接12號(DataIn、GPIO 18)
     - 剩下 1 條紅線和 1 條黑線接到 5V2A 的供電器
-    ![](https://i.imgur.com/0ydY6td.png)
+    <img src = "https://i.imgur.com/0ydY6td.png" width = "400px">
 - 測試套件是否安裝成功。
     - 把`strandtest.py` 的 `LED_COUNT` 改成自己的燈條上的單元數量。
     - 執行這個檔案，若可以點亮燈光代表安裝成功。
     ```terminal=
     sudo python3 strandtest.py
     ```
-    ![](https://i.imgur.com/aHRbt4u.png)
+    <img src = "https://i.imgur.com/gM87SWb.png" width = "200px">
 - 啟動 server。
     - 把 `lightServer.py` 和 `lightMode.py` 放到此目錄下
     ```terminal=
@@ -85,14 +85,14 @@ sudo python ./python/setup.py install
 - 程式偵測在語句中提到關鍵詞，會播放相對應的音樂(.mp3)，並傳送亮燈的 requests 給樹莓派
     - 如果一句內有2個以上的關鍵詞，會以程式碼中排列順序覆蓋前面的音樂和 request
 - 在 linux 系統電腦下載以下幾個檔案後放到一目錄下
-     - Speech2Music.py
-     - bot.py
-     - sendRequest.py
+     - `Speech2Music.py`
+     - `bot.py`
+     - `sendRequest.py`
      - 所有 mp3 檔
 - 設定關鍵字
     - 有三個地方分別儲存執行程式所需的關鍵字，請自行設定新的關鍵字、mp3 檔、燈光模式，三者在各 list 的位置必須相同
 
-| 所在檔案 | list 名 | 儲存資料 |
+| 所在檔案 | 變數名 | 儲存資料 |
 | ---- | ---- | ----- |
 |`Speech2Music.py` | `type` | 語音關鍵字 |
 |`Speech2Music.py` | `result` | mp3 檔名 (不用打.mp3) |
@@ -103,30 +103,27 @@ python3 Speech2Music.py
 ```
 
 ### 【Telegram Bot】
-- 這是一個半自動的狼人殺 bot，由 bot 當主持人主持狼人殺遊戲，並且適時播放聲音、向 server 發切換燈光模式的 requests
-- 遊戲進行時，依序進入到各個模式（狼人、女巫、預言家），發出**主持語音**、**音效**及燈光模式的 request
-- 狼人殺中每一種模式
+- 這是一個半自動的狼人殺 bot，由 bot 當主持人主持狼人殺遊戲，並且適時播放聲音、向 server 發切換燈光模式的 requests。
+- 遊戲進行時，依序進入到各個模式（狼人、女巫、預言家），發出**主持語音**、**音效**及燈光模式的 request。
+- 狼人殺中每一種模式都有：
     - 對應音效
     - 對應語音
     - 對應燈光模式
-
-
-
-#### telegram bot 生成
+#### 生成 telegram bot 
 - 到 telegram 搜尋 @BotFather 
 - 然後按 `/start`
 - 創造機器人 `/newbot`
 - 輸入要創建機器人的名字
 - 輸入要創建機器人的 username
 - 成功後即可獲得機器人的連結 & token
-- ![](https://i.imgur.com/cuWVSpH.png)
+<img src = "https://i.imgur.com/cuWVSpH.jpg" width = "300px">
   > 紅色框框中為 token
 - 將 token 儲存到 token.txt ， 並移動到和`bot.py`相同資料夾內
 #### telegram bot 增加 command
 - 查詢創建完畢的 bot `/mybots`
-- ![](https://i.imgur.com/wAmMG0Q.png)
+<img src = "https://i.imgur.com/wAmMG0Q.jpg" width = "300px">
 - 點選 Edit bot
-- ![](https://i.imgur.com/aDAddd1.png)
+<img src = "https://i.imgur.com/aDAddd1.jpg" width = "300px">
 - 點選 Edit Commands
 - 輸入
     ```text＝
@@ -150,18 +147,35 @@ python3 Speech2Music.py
 `/poll` 玩家白天投票選項
 
 ### 執行準備
-1. 樹梅派執行 `lightServer.py`
-2. 類 linux 電腦執行 `bot.py` 或 `Speech2Music.py`
+1. 樹莓派和電腦連線到同一個網域
+2. 樹莓派執行 `lightServer.py`
+2. `sendRequest.py` 中的 ip 設定成 pi 的 ip 
+3. 類 linux 電腦執行 `bot.py` 或 `Speech2Music.py`
     - `lightServer.py`：控制燈光模式的 server
     - `bot.py`：執行 Telegram Bot
     - `Speech2Music.py`：語音辨識播放音樂
-3. 如果要玩狼人殺,請先將 @Hash_Slinging_Slasher_bot 加為好友，並自行創立群組遊玩
+4. 如果要玩狼人殺,請**先將 @Hash_Slinging_Slasher_bot 加為好友**，並自行創立群組遊玩
 
 ### 執行
 #### 玩狼人殺
-- 玩家們需先將機器人 @Hash_Slinging_Slasher_bot 加為好友，並另外建立大群加入機器人，再至大群打`/prepare`，若要取消準備則打 `/cancel`。依按下的順序決定為幾號玩家，telegram bot 確認遊玩人數，其中一位玩家打`/start` 遊戲即開始進行，如果想中止遊戲請打 `/stop`。telegram bot 隨機分配角色，玩家到與機器人的私人聊天室確認身分，天黑後依身分進行遊戲，天亮後至大群，其中一位玩家打`/poll`進行投票，依此循環，直至遊戲結束。
+- 玩家用這個程式玩狼人殺需要在 2 個聊天室切換
+    - 一是單一玩家和 Telegram bot 各自的私人聊天室，用來執行各個角色所需的工作，以下簡稱【私聊】。
+    - 二是所有玩家和 Telegram bot 共組的群組聊天室，以下簡稱【遊戲群】。
+
+1. 玩家們需先將機器人 @Hash_Slinging_Slasher_bot 加為好友，並另外建立遊戲群加入機器人。
+2. 【遊戲群】玩家們已經準備好開始遊戲後，各自在聊天室輸入`/prepare`。
+    - 若要取消準備，輸入 `/cancel`。
+3. 【遊戲群】所有玩家都準備好後，其中一位玩家打`/start`，遊戲即開始進行。
+    - 此時程式會依玩家輸入`/prepare`的順序決定玩家編號並確認遊玩人數後，隨機分配角色。
+    - 如果想中止遊戲請打 `/stop`。telegram bot 
+4. 【私聊】各個玩家到私人聊天室確認身分。
+5. 【私聊】天黑後，玩家依各自身分在聊天室中點選按鍵已執行所需要動作(殺人、預言、投毒等)。
+6. 【遊戲群】天亮後，由一位玩家輸入`/poll`發起投票，得票數多的玩家被淘汰。
+7. 依 1. ~ 6. 的步驟循環，直至好人或壞人其中一方獲勝，遊戲結束。
 #### 語音辨識播放音樂
-- 使用者說已設定好的關鍵字，電腦會播放出對應音樂、樹莓派會亮起對應的燈光模式
+1. Terminal 出現`請開始說話:`的文字後。使用者可以對電腦收音裝置說已設定好的「關鍵字」或「一段含有關鍵字的句子」。
+2. 電腦會播放出對應音樂、樹莓派會亮起對應的燈光。
+3. 若想中斷現在撥放中的音樂及燈光，直接說下一個關鍵字即可。
 
 ## Job Assignment（工作分配）
 - 柯予亮 : 狼人殺(telegram bot)、焊接
@@ -185,20 +199,17 @@ python3 Speech2Music.py
 
 
 ## 感謝名單
-- 照片拍攝
-[name=蔣媽]
-- LED燈連接問題 
-[name=蔡琳瀠]
-- 燈條焊接、各種問題詢問
-[name=漢偉]
-- 關鍵字、有趣靈感來源
-[name=學而姐姐]
-- 器材提供
-[name=蓬萊人偶]
-- 代買器材
-[name=嚴彥婷]
+- 蔣媽：照片拍攝
+- 蔡琳瀠：LED燈連接問題 
+- 漢偉：燈條焊接、各種問題詢問
+- 學而姐姐：關鍵字、有趣靈感來源
+- 蓬萊人偶：器材提供
+- 嚴彥婷：代買器材
 
 ## 實作影片
 
 [語音辨識和氣氛燈](https://www.youtube.com/watch?v=thVm5X8Rec8)
 [狼人殺bot遊戲過程](https://www.youtube.com/watch?v=GnFAuDYYw5I)
+
+
+
