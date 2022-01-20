@@ -6,10 +6,11 @@
 
 ## Implementation Resources 設備資源
 
-|設備名|來源|
-|-|-|
-|樹梅派 Pi4|柏瑋友情贊助|
-|USB全指向降噪麥克風(MIC-026)|欣華電子|
+|設備名|圖片|來源|
+|-|-|-|
+|樹梅派 Pi4||柏瑋友情贊助|
+|USB全指向降噪麥克風(MIC-026)|![image](https://user-images.githubusercontent.com/82037691/150300562-2e7494c6-06a3-4b02-9c5a-3d6df54632f8.png =200x)
+|欣華電子|
 |杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|今華電子|
 |5V 滴膠燈條 --- 型號(WS2812B)+控制器|[蝦皮](https://reurl.cc/rQRDoN)
 |一台裝有類 Linux 的電腦，並且可以錄音及收音 | 自己的電腦 |
