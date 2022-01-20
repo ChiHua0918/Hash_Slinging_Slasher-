@@ -8,11 +8,10 @@
 
 |設備名|圖片|來源|
 |-|-|-|
-|樹梅派 Pi4||柏瑋友情贊助|
-|USB全指向降噪麥克風(MIC-026)|![image](https://user-images.githubusercontent.com/82037691/150300562-2e7494c6-06a3-4b02-9c5a-3d6df54632f8.png =200x)
-|欣華電子|
-|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|今華電子|
-|5V 滴膠燈條 --- 型號(WS2812B)+控制器|[蝦皮](https://reurl.cc/rQRDoN)
+|樹梅派 Pi4|![image](https://user-images.githubusercontent.com/82037691/150301138-7bd54534-e2ba-44f6-a78d-86cd55ed3261.png)|柏瑋友情贊助|
+|USB全指向降噪麥克風(MIC-026)|![image](https://user-images.githubusercontent.com/82037691/150301211-9c071c28-65ad-49d3-8b27-b1e385974533.png)|欣華電子|
+|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![image](https://user-images.githubusercontent.com/82037691/150301335-19c059a6-1756-42fb-a412-1e7fff15ac5b.png)|今華電子|
+|5V 滴膠燈條 --- 型號(WS2812B)+控制器|![image](https://user-images.githubusercontent.com/82037691/150301405-52496243-46fa-4b72-96e1-44804a117626.png)|[蝦皮](https://reurl.cc/rQRDoN)
 |一台裝有類 Linux 的電腦，並且可以錄音及收音 | 自己的電腦 |
 
 ## Implementation Process 實作過程
