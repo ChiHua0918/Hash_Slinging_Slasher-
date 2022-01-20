@@ -10,7 +10,7 @@
 |-|-|-|
 |樹梅派 Pi4|![image](https://user-images.githubusercontent.com/82037691/150301138-7bd54534-e2ba-44f6-a78d-86cd55ed3261.png)|柏瑋友情贊助|
 |USB全指向降噪麥克風(MIC-026)|![image](https://user-images.githubusercontent.com/82037691/150301211-9c071c28-65ad-49d3-8b27-b1e385974533.png)|欣華電子|
-|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![image](https://user-images.githubusercontent.com/82037691/150301335-19c059a6-1756-42fb-a412-1e7fff15ac5b.png)|今華電子|
+|杜邦線<br/>1. 公對公<br/>2. 公對母<br/>3. 母對母|![image](https://user-images.githubusercontent.com/82037691/150301681-1ca8f261-8dcb-47ee-862f-62d9c209f9d0.png)|今華電子|
 |5V 滴膠燈條 --- 型號(WS2812B)+控制器|![image](https://user-images.githubusercontent.com/82037691/150301405-52496243-46fa-4b72-96e1-44804a117626.png)|[蝦皮](https://reurl.cc/rQRDoN)
 |一台裝有類 Linux 的電腦，並且可以錄音及收音 | 自己的電腦 |
 
