@@ -127,6 +127,7 @@ python3 Speech2Music.py
 - 查詢創建完畢的 bot `/mybots`
 
 <img src = "https://i.imgur.com/wAmMG0Q.jpg" width = "300px">
+
 - 點選 Edit bot
 
 <img src = "https://i.imgur.com/aDAddd1.jpg" width = "300px">
