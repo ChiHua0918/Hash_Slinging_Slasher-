@@ -29,7 +29,7 @@ sudo apt install git
 - python 沒有內建 ws281x 的套件，所以要用樹莓派點亮 
 - 之後安裝套件和執行程式都在`/rpi_ws281x/python/examples/`這個目錄下進行
 ```terminel=
-clone https://github.com/jgarff/rpi_ws281x.git`
+clone https://github.com/jgarff/rpi_ws281x.git
 ```
 **語音辨識部分**
 ```terminal=
@@ -116,14 +116,21 @@ python3 Speech2Music.py
 - 輸入要創建機器人的名字
 - 輸入要創建機器人的 username
 - 成功後即可獲得機器人的連結 & token
+
 <img src = "https://i.imgur.com/cuWVSpH.jpg" width = "300px">
-  > 紅色框框中為 token
+
+- 紅色框框中為 token
 - 將 token 儲存到 token.txt ， 並移動到和`bot.py`相同資料夾內
+
 #### telegram bot 增加 command
+
 - 查詢創建完畢的 bot `/mybots`
+
 <img src = "https://i.imgur.com/wAmMG0Q.jpg" width = "300px">
 - 點選 Edit bot
+
 <img src = "https://i.imgur.com/aDAddd1.jpg" width = "300px">
+
 - 點選 Edit Commands
 - 輸入
     ```text＝
@@ -150,8 +157,8 @@ python3 Speech2Music.py
 1. 樹莓派和電腦連線到同一個網域
 2. 樹莓派執行 `lightServer.py`
 2. `sendRequest.py` 中的 ip 設定成 pi 的 ip 
-3. 類 linux 電腦執行 `bot.py` 或 `Speech2Music.py`
     - `lightServer.py`：控制燈光模式的 server
+3. 類 linux 電腦執行 `bot.py` 或 `Speech2Music.py`
     - `bot.py`：執行 Telegram Bot
     - `Speech2Music.py`：語音辨識播放音樂
 4. 如果要玩狼人殺,請**先將 @Hash_Slinging_Slasher_bot 加為好友**，並自行創立群組遊玩
