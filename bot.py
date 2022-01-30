@@ -40,7 +40,15 @@ def wordToSpeak(text, sec):
 def receive_poll_answer(update: Update, context: CallbackContext):
     global players, mode
     answer = update.poll_answer
-    poll_id = answer.poll_id
+    poll_id = answer.poll_id # 投票玩家 ID
+    # 玩家已經淘汰或是未準備的玩家不可以參與投票
+    playerInGame = False
+    for num in players:
+        if poll_id in players[num]['userID']:
+            playerInGame = True
+            break
+    if playerInGame == False:
+        return
     # 目前總投票人數
     context.bot_data[poll_id]["answers"] += 1
     # 玩家投了誰
@@ -76,6 +84,7 @@ def poll(update: Update, context: CallbackContext):
     global players
     # 投票重置
     option_result = [0 for i in range(len(players))]
+    option_result.append("棄票")
     questions = [str(i) for i in players]
     # option_result = [0 for i in range(2)]
     # questions = ["well","good"]
@@ -224,10 +233,11 @@ def keyboard(buttonList, mode):
     if mode == "werewolf":
         # 所有狼人號碼 - 最後一個狼掌握生死大權
         allwerewolf = []
-        # 先加入所有狼人
+        # 先加入所有狼人到清單
         for num in players:
             if players[num]['role'] == mode:
-                allwerewolf.append(num)
+                data = {num,players[num]['name']}+"\n"
+                allwerewolf.append(players[num])
         # 發訊息給所有狼
         for num in allwerewolf:
             userID = players[num]['userID']
@@ -267,13 +277,12 @@ def process(step):
     print("process-step", mode)
     # 狼人模式
     def wolf():
-        updater.bot.send_message(chat_id=group_id, text=f"狼人請睜眼")
+        wordToSpeak("天黑請閉眼", 1)
+        updater.bot.send_message(chat_id=group_id, text="天黑請閉眼")
         send_request(mode)
         system('cvlc --play-and-exit '+mode+'.mp3')
-        # path = "./"+step+".mp3"
-        # playsound.playsound(path)
+        updater.bot.send_message(chat_id=group_id, text=f"狼人請睜眼")
         wordToSpeak("狼人請睜眼", 1)
-        # 狼人請殺人(10 sec)
         wordToSpeak("狼人請殺人", 1)
         # 跳出 keyboard 選擇號碼 --- 一個人負責點選殺誰
         keyboard([i for i in players], "werewolf")
@@ -385,16 +394,17 @@ def distribution(players, playerNum):
     number = len(players)
     roles = ['werewolf', 'witch', 'predictor', 'civilian']
     # 遊玩人數至少 4 人,以  人為基準分配角色 （神職固定 2 人）
+    # 比 4 人多幾個人
     differ = number - 4
     if differ == 0:
         pass
-    # 偶數 狼人比平民多一點
+    # 多出的人數為"偶數" 狼人比平民多一點
     elif (differ)%2 == 0:
         for i in range(differ//2):
             roles.append("werewolf")
         for i in range(differ//2):
             roles.append("civilian")
-    # 奇數 平民比狼人多一點
+    # 多出的人數為"奇數" 平民比狼人多一點
     else:
         for i in range(differ//2):
             roles.append("werewolf")
@@ -451,8 +461,6 @@ def startGame(update: Update, context: CallbackContext):
     for i in range(4, 0, -1):
         wordToSpeak(str(i), 1)
         updater.bot.send_message(chat_id=group_id, text=str(i))
-    wordToSpeak("天黑請閉眼", 1)
-    updater.bot.send_message(chat_id=group_id, text="天黑請閉眼")
     process(mode)
 
 # 清除資料
@@ -484,10 +492,19 @@ def cancel(update: Update, context: CallbackContext):
 
 # 玩家準備 --- 同時記錄 ID & 人數
 def prepare(update: Update, context: CallbackContext):
+    global players, group_id
+    userID = update.message.from_user.id
+    group_id = update.message.chat_id
     # 遊戲進行中不可以有玩家準備
     if status == True:
         response = "遊戲進行中,請等待下一場遊戲"
         update.message.reply_text(response)
+        return
+    # 遊戲最多 10 個人玩
+    if len(players) >= 10:
+        response = "遊戲人數已達上限 (最多 10 個人玩)"
+        updater.bot.send_message(chat_id=group_id, text=response)
+        return
     # 預防有人沒有加 telegram bot 為好友
     try :
         print(update.message.from_user.id)
@@ -495,15 +512,10 @@ def prepare(update: Update, context: CallbackContext):
     except:
         update.message.reply_text("請先將 @Hash_Slinging_Slasher_bot 加為好友")
         return
-
     # 只有群組才可以準備
-    if update.message.chat_id >= 0:
-        updater.bot.send_message(chat_id=update.message.chat_id, text="狼人殺只可以在群組內玩~")
-        return
-
-    global players, group_id
-    userID = update.message.from_user.id
-    group_id = update.message.chat_id
+    # if update.message.chat_id >= 0:
+    #     updater.bot.send_message(chat_id=update.message.chat_id, text="狼人殺只可以在群組內玩~")
+    #     return
     name = update.effective_user.full_name  # 玩家本名 -- 陳XX
     hasPrepare = False  # 是否準備過
     response = ""
@@ -519,7 +531,8 @@ def prepare(update: Update, context: CallbackContext):
         userData['name'] = name
         players[len(players)+1] = userData
         response = f"目前準備人數 {len(players)} 人"
-    print("prepare",players)
+    print("玩家",userID,name,"已準備")
+    print(players)
     updater.bot.send_message(chat_id=group_id, text=response)
 
 # 列出目前所有準備的玩家
