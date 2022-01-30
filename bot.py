@@ -1,3 +1,6 @@
+# 狼人殺遊戲
+# 一開始的設想是大家聚在一起玩，只是沒有主持人，用電腦撥放聲音的方式替代主持人講話(天黑請閉眼、狼人音效等等)
+# 所以當多個狼人出現時，睜眼會互相看到對方並比手畫腳選出殺害對象，所以只會有一個狼人選擇要殺的號碼
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 from telegram.ext import CommandHandler, CallbackQueryHandler  # 指令接收 CallbackQuery
@@ -553,13 +556,7 @@ def introduce(update: Update, context: CallbackContext):
                '/color (看看可不可以隨意調燈光顏色)(調狼人殺燈光或是不玩遊戲單純調燈光顏色)'
     update.message.reply_text(response)
 
-# 點燈 --- 控制燈的顏色
-# def lightUp():
-    # 有哪些顏色的燈？
-    # 還是可以發送 RGB 給 pi 然後點亮這個顏色的燈?
-
 def command():
-    # updater.dispatcher.add_handler(CommandHandler('lightUp', lightUp))
     updater.dispatcher.add_handler(CommandHandler('introduce', introduce))
     updater.dispatcher.add_handler(CommandHandler('prepare', prepare))
     updater.dispatcher.add_handler(CommandHandler('cancel', cancel))
