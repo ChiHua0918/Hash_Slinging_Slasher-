@@ -237,18 +237,19 @@ def keyboard(buttonList, mode):
         # 所有狼人號碼 - 最後一個狼掌握生死大權
         allwerewolf = []
         # 先加入所有狼人到清單
+        response = ""
         for num in players:
             if players[num]['role'] == mode:
-                data = {num,players[num]['name']}+"\n"
-                allwerewolf.append(players[num])
+                allwerewolf.append(num)
+                response += f"{num}號 {players[num]['name']}\n"
+        print(response)
         # 發訊息給所有狼
         for num in allwerewolf:
             userID = players[num]['userID']
             # 其餘狼人不可以選擇獵殺號碼
-            updater.bot.send_message(chat_id=userID, text=f"狼人號碼為{allwerewolf}")
+            updater.bot.send_message(chat_id=userID, text=f"狼人同夥為\n{response}")
             # 最後一個狼人可以選擇獵殺的號碼
-            print("allwerewolf.index(num)",allwerewolf.index(num))
-            print("allwerewolf",allwerewolf)
+            print("狼人獵殺號碼")
             if allwerewolf.index(num) == len(allwerewolf)-1:
                 updater.bot.send_message(chat_id=userID, text="請選擇獵殺的號碼", reply_markup=reply_markup)
             
@@ -435,9 +436,9 @@ def startGame(update: Update, context: CallbackContext):
         updater.bot.send_message(chat_id=update.message.chat_id, text="狼人殺只可以在群組內玩~")
         return
     # 遊玩人數至少要 4 個
-    if len(players) < 4:
-        updater.bot.send_message(chat_id=update.message.chat_id, text="人數不足 4 人，無法進行遊戲")
-        return
+    # if len(players) < 4:
+    #     updater.bot.send_message(chat_id=update.message.chat_id, text="人數不足 4 人，無法進行遊戲")
+    #     return
     # 遊戲進行中
     if status == True:
         response = "遊戲已進行，若要重新開始請先結束遊戲!"
@@ -508,6 +509,10 @@ def prepare(update: Update, context: CallbackContext):
         response = "遊戲人數已達上限 (最多 10 個人玩)"
         updater.bot.send_message(chat_id=group_id, text=response)
         return
+    # 只有群組才可以準備
+    if update.message.chat_id >= 0:
+        updater.bot.send_message(chat_id=update.message.chat_id, text="狼人殺只可以在群組內玩~")
+        return
     # 預防有人沒有加 telegram bot 為好友
     try :
         print(update.message.from_user.id)
@@ -515,10 +520,6 @@ def prepare(update: Update, context: CallbackContext):
     except:
         update.message.reply_text("請先將 @Hash_Slinging_Slasher_bot 加為好友")
         return
-    # 只有群組才可以準備
-    # if update.message.chat_id >= 0:
-    #     updater.bot.send_message(chat_id=update.message.chat_id, text="狼人殺只可以在群組內玩~")
-    #     return
     name = update.effective_user.full_name  # 玩家本名 -- 陳XX
     hasPrepare = False  # 是否準備過
     response = ""
